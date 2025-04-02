@@ -15,7 +15,11 @@ func Unzip(archive string, file string, dest io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("internal: %w", err)
 	}
-	defer MustClose(r)
+	defer func() {
+		if err := r.Close(); err != nil {
+			panic(err)
+		}
+	}()
 	for _, f := range r.File {
 		if f.Name == file {
 			var rc io.ReadCloser

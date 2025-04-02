@@ -12,6 +12,14 @@ const (
 )
 
 var (
-	StaticStorageDirectory = filepath.Join(must(os.UserHomeDir()), twDirName)
+	StaticStorageDirectory = filepath.Join(mustGetHomeDir(), twDirName)
 	TempStorageDirectory   = filepath.Join(os.TempDir(), twDirName)
 )
+
+func mustGetHomeDir() string {
+	pwd, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+	return pwd
+}

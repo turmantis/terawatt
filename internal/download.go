@@ -19,7 +19,11 @@ func DownloadTo(ctx context.Context, url string, dest io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("internal: %w", err)
 	}
-	defer MustClose(res.Body)
+	defer func() {
+		if err := res.Body.Close(); err != nil {
+			panic(err)
+		}
+	}()
 	if res.StatusCode >= 400 {
 		return fmt.Errorf("internal: sad status code :( %d", res.StatusCode)
 	}

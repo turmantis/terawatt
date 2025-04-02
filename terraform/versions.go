@@ -42,7 +42,11 @@ func latestVersion(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("terraform: %w", err)
 	}
-	defer internal.MustClose(vf)
+	defer func() {
+		if err := vf.Close(); err != nil {
+			panic(err)
+		}
+	}()
 	versions, err := parseVersionFile(vf)
 	if err != nil {
 		return "", err
@@ -111,7 +115,9 @@ func getAvailableVersions(ctx context.Context) (*os.File, error) {
 		if err = internal.DownloadTo(ctx, repository, vf); err != nil {
 			return nil, fmt.Errorf("terraform: %w", err)
 		}
-		internal.MustClose(vf)
+		if err = vf.Close(); err != nil {
+			panic(err)
+		}
 	}
 	f, err := os.Open(allVersionsFile)
 	if err != nil {

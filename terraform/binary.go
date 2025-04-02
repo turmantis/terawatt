@@ -31,7 +31,9 @@ func BinaryHostPath(ctx context.Context, version string) (string, error) {
 			if err = internal.DownloadTo(ctx, downloadUrl(version), archive); err != nil {
 				return "", fmt.Errorf("terraform: %w", err)
 			}
-			internal.MustClose(archive)
+			if err = archive.Close(); err != nil {
+				panic(err)
+			}
 		}
 		var bin *os.File
 		bin, err = internal.CreateOrTruncate(hostBinary(version))
@@ -41,7 +43,9 @@ func BinaryHostPath(ctx context.Context, version string) (string, error) {
 		if err = internal.Unzip(ap, "terraform", bin); err != nil {
 			return "", fmt.Errorf("terraform: %w", err)
 		}
-		internal.MustClose(bin)
+		if err = bin.Close(); err != nil {
+			panic(err)
+		}
 	}
 	return tfHost, nil
 }
