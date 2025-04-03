@@ -26,9 +26,9 @@ Terraform has compared your real infrastructure against your configuration and f
 Currently only exact version expression can be parsed from hcl files (eg `~> 1.2.3-foo`).
 
 ## Compare With
-|                                                 | terawatt | tfenv |
-|-------------------------------------------------|----------|-------|
-| Automatically download terraform                | 🟢       | 🔴    |   
-| Parses version from `required_version` from hcl | 🟢       | 🔴    |
-| Parses version from `.terraform-version`        | 🟢       | 🟢    |
-| Parses version expressions (eg `>=1.0<2`)       | 🔴       | 🟢    |
+|                                                      | terawatt | tfenv |
+|------------------------------------------------------|----------|-------|
+| Automatically download terraform.                    | 🟢       | 🔴    |   
+| Parses version from `required_version` in hcl files. | 🟢       | 🔴    |
+| Parses version from `.terraform-version`.            | 🟢       | 🟢    |
+| Parses version expressions (eg `>=1.0<2`).           | 🔴       | 🟢    |
